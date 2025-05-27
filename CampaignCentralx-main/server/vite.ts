@@ -68,18 +68,20 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  // Use process.cwd() to get the project root at runtime after bundling
+  const distPath = path.join(process.cwd(), "dist/public");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`,
+      `Could not find the build directory: ${distPath}, make sure to build the client first`
     );
   }
 
   app.use(express.static(distPath));
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  // For SPA: serve index.html for all non-API routes
+  app.get("*", (req, res) => {
+    if (req.path.startsWith("/api")) return;
+    res.sendFile(path.join(distPath, "index.html"));
   });
 }
