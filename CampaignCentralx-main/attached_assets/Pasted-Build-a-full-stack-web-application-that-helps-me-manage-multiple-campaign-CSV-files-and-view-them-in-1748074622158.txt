@@ -1,0 +1,78 @@
+Build a full-stack web application that helps me manage multiple campaign CSV files and view them in a Google Sheets-like interface.
+
+---
+
+🔧 FUNCTIONALITY:
+
+1. Public Website View:
+   - The home page should look like a normal simple website.
+   - A password input styled as a search bar (on homepage or in navbar).
+   - When the correct password is entered, redirect to `/dashboard`.
+
+2. Dashboard:
+   - Lists all uploaded campaign files by name.
+   - Allows me to view each campaign’s data in a spreadsheet-like format (read-only).
+   - Includes a CSV upload interface.
+
+3. Uploading CSV:
+   - When uploading a CSV, auto-detect fields based on default headers:
+     - First Name
+     - Last Name
+     - Title
+     - Company
+     - Email
+     - Mobile Phone
+     - Other Phone
+     - Corporate Phone
+     - Person Linkedin Url
+     - Company Linkedin Url
+     - Website
+   - If any of these fields are not found in the CSV, let me map them manually using a dropdown of the CSV’s column headers.
+   - I should be able to skip fields if not available.
+   - Store only selected fields in a secure, structured format (e.g., JSON or database table).
+
+4. Viewing Campaign Data:
+   - Clicking on a campaign shows its rows in a table UI (like Google Sheets or Airtable).
+   - Table should support basic filtering/search (optional).
+   - Data is read-only.
+
+---
+
+🔐 SECURITY:
+
+- The dashboard is only accessible with a password (entered on homepage).
+- Data (CSV content and field mappings) should be encrypted at rest.
+- Use HTTPS and sanitize all inputs.
+- Password authentication can be hardcoded or stored in a secure config file for now.
+
+---
+
+🧱 TECH STACK:
+
+- Frontend: React (with TailwindCSS or plain CSS), Single Page App behavior
+- Backend: Node.js + Express (or Python with FastAPI)
+- File Handling: Store CSVs securely in server or use encrypted S3 bucket
+- Table UI: Use `react-table` or a similar spreadsheet-like view
+- Encryption: Use AES for file encryption, bcrypt or Argon2 for password
+- Hosting (Optional): Vercel for frontend, Render or DigitalOcean for backend
+
+---
+
+📦 STRUCTURE:
+
+- `/` → Public landing page with password field
+- `/dashboard` → Protected area listing campaigns and allowing upload
+- `/campaign/:name` → Spreadsheet view of selected campaign
+
+---
+
+⚠️ NOTES:
+
+- No user login system is required, only a single access password
+- Make sure the app doesn't reload between views (SPA behavior)
+- Data should persist and be secure (encryption is critical)
+- Auto-map fields if possible, let user fix any unmapped fields before saving
+
+---
+
+Build this in a modular, easy-to-extend way so I can add things like download/export, IP whitelisting, or advanced filtering later.
